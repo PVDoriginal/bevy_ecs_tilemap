@@ -57,6 +57,44 @@ pub(crate) mod render;
 /// A module which contains tile components.
 pub mod tiles;
 
+pub struct NoRenderTilemapPlugin;
+
+impl Plugin for NoRenderTilemapPlugin {
+    fn build(&self, app: &mut bevy::app::App) {
+        // #[cfg(feature = "render")]
+        // app.add_plugins(render::TilemapRenderingPlugin);
+
+        app.add_systems(First, update_changed_tile_positions.in_set(TilemapFirstSet));
+
+        // #[cfg(all(not(feature = "atlas"), feature = "render"))]
+        // {
+        //     app.insert_resource(array_texture_preload::ArrayTextureLoader::default());
+        //     let render_app = app.sub_app_mut(RenderApp);
+        //     render_app.add_systems(ExtractSchedule, array_texture_preload::extract);
+        // }
+
+        app.register_type::<FrustumCulling>()
+            .register_type::<TilemapId>()
+            .register_type::<TilemapSize>()
+            .register_type::<TilemapTexture>()
+            .register_type::<TilemapTileSize>()
+            .register_type::<TilemapGridSize>()
+            .register_type::<TilemapSpacing>()
+            .register_type::<TilemapTextureSize>()
+            .register_type::<TilemapType>()
+            .register_type::<TilemapAnchor>()
+            .register_type::<TilePos>()
+            .register_type::<TileTextureIndex>()
+            .register_type::<TileColor>()
+            .register_type::<TileVisible>()
+            .register_type::<TileFlip>()
+            .register_type::<TileStorage>()
+            .register_type::<TilePosOld>()
+            .register_type::<AnimatedTile>()
+            .configure_sets(First, TilemapFirstSet.after(TimeSystem));
+    }
+}
+
 /// A bevy tilemap plugin. This must be included in order for everything to be rendered.
 /// But is not necessary if you are running without a renderer.
 pub struct TilemapPlugin;
@@ -141,7 +179,6 @@ pub struct MaterialTilemapBundle<M: MaterialTilemap> {
     pub anchor: TilemapAnchor,
 }
 
-#[cfg(not(feature = "render"))]
 /// The default tilemap bundle. All of the components within are required.
 #[derive(Bundle, Debug, Default, Clone)]
 pub struct StandardTilemapBundle {
