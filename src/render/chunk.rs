@@ -49,6 +49,7 @@ impl RenderChunk2dStorage {
         tile_pos: UVec2,
         chunk_entity: Entity,
         position: &UVec4,
+        z: f32,
         chunk_size: UVec2,
         mesh_type: TilemapType,
         tile_size: TilemapTileSize,
@@ -86,6 +87,7 @@ impl RenderChunk2dStorage {
                 hasher.finish(),
                 chunk_entity.to_bits(),
                 &pos,
+                z,
                 chunk_size,
                 mesh_type,
                 tile_size,
@@ -192,6 +194,8 @@ pub struct RenderChunk2d {
     index: UVec3,
     /// The position of this chunk, in world space,
     position: Vec2,
+    /// The z offset of this chunk, based on [crate::tiles::TileZ]
+    pub z: f32,
     /// Size of the chunk, in tiles.
     pub size_in_tiles: UVec2,
     /// [`TilemapSize`] of the map this chunk belongs to.
@@ -233,6 +237,7 @@ impl RenderChunk2d {
         id: u64,
         tilemap_id: u64,
         index: &UVec3,
+        z: f32,
         size_in_tiles: UVec2,
         map_type: TilemapType,
         tile_size: TilemapTileSize,
@@ -259,6 +264,7 @@ impl RenderChunk2d {
             id,
             index: *index,
             position,
+            z,
             size_in_tiles,
             map_size,
             map_type,

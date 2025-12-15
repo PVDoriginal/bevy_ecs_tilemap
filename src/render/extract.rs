@@ -10,7 +10,6 @@ use bevy::{
     },
 };
 
-use crate::anchor::TilemapAnchor;
 use crate::prelude::TilemapGridSize;
 use crate::prelude::TilemapRenderSettings;
 use crate::render::DefaultSampler;
@@ -24,6 +23,7 @@ use crate::{
     },
     tiles::{TileColor, TileFlip, TilePos, TileTextureIndex, TileVisible},
 };
+use crate::{anchor::TilemapAnchor, tiles::TileZ};
 
 use super::chunk::PackedTileData;
 
@@ -35,6 +35,7 @@ pub struct ExtractedTile {
     pub entity: Entity,
     pub position: TilePos,
     pub old_position: TilePosOld,
+    pub z: TileZ,
     pub tile: PackedTileData,
     pub tilemap_id: TilemapId,
 }
@@ -187,6 +188,7 @@ pub fn extract(
                 &RenderEntity,
                 &TilePos,
                 &TilePosOld,
+                Option<&TileZ>,
                 &TilemapId,
                 &TileTextureIndex,
                 &TileVisible,
@@ -250,6 +252,7 @@ pub fn extract(
         render_entity,
         tile_pos,
         tile_pos_old,
+        tile_z,
         tilemap_id,
         tile_texture,
         visible,
@@ -312,6 +315,7 @@ pub fn extract(
                     entity: render_entity.id(),
                     position: *tile_pos,
                     old_position: *tile_pos_old,
+                    z: *tile_z.unwrap_or(&TileZ(0.0)),
                     tile,
                     tilemap_id: TilemapId(data.0.id()),
                 },

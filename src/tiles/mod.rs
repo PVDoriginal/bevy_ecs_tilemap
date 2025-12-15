@@ -19,6 +19,17 @@ pub struct TilePos {
     pub y: u32,
 }
 
+/// An offset for the tile's z value that affects y-sorting.
+///
+/// Useful if you want to e.g. render walls in a top-down game and the upper tiles should be offset to have the same z as the lower tile.
+///
+/// This should only be used with the [chunk size](crate::prelude::TilemapRenderSettings::render_chunk_size) set to (1, 1) in order to avoid unexpected results,
+/// since each chunk can only have one z offset and that offset will be determined by the last tile inside it that's been iterated over.  
+#[derive(Component, Reflect, Default, Clone, Copy)]
+#[reflect(Component)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct TileZ(pub f32);
+
 impl TilePos {
     pub const fn new(x: u32, y: u32) -> Self {
         Self { x, y }

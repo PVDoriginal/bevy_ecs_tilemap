@@ -107,6 +107,7 @@ pub(crate) fn prepare(
             in_chunk_tile_index,
             tile.tilemap_id.0,
             &chunk_data,
+            tile.z.0,
             *chunk_size,
             *mesh_type,
             *tile_size,
