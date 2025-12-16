@@ -80,32 +80,34 @@ impl RenderChunk2dStorage {
         let mut hasher = std::collections::hash_map::DefaultHasher::new();
         position.hash(&mut hasher);
 
-        if chunk_storage.contains_key(&pos) {
-            chunk_storage.get_mut(&pos).unwrap()
-        } else {
-            let chunk = RenderChunk2d::new(
-                hasher.finish(),
-                chunk_entity.to_bits(),
-                &pos,
-                z,
-                chunk_size,
-                mesh_type,
-                tile_size,
-                spacing,
-                grid_size,
-                texture,
-                texture_size,
-                map_size,
-                transform,
-                visibility.get(),
-                **frustum_culling,
-                render_size,
-                y_sort,
-            );
-            self.entity_to_chunk.insert(chunk_entity, pos);
-            chunk_storage.insert(pos, chunk);
-            chunk_storage.get_mut(&pos).unwrap()
+        if let Some(chunk) = chunk_storage.clone().get(&pos)
+            && chunk.z == z
+        {
+            return chunk_storage.get_mut(&pos).unwrap();
         }
+
+        let chunk = RenderChunk2d::new(
+            hasher.finish(),
+            chunk_entity.to_bits(),
+            &pos,
+            z,
+            chunk_size,
+            mesh_type,
+            tile_size,
+            spacing,
+            grid_size,
+            texture,
+            texture_size,
+            map_size,
+            transform,
+            visibility.get(),
+            **frustum_culling,
+            render_size,
+            y_sort,
+        );
+        self.entity_to_chunk.insert(chunk_entity, pos);
+        chunk_storage.insert(pos, chunk);
+        chunk_storage.get_mut(&pos).unwrap()
     }
 
     pub fn get(&self, position: &UVec4) -> Option<&RenderChunk2d> {
