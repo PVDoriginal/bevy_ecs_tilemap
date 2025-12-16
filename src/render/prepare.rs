@@ -101,6 +101,8 @@ pub(crate) fn prepare(
             tile.tilemap_id.0.index(),
         );
 
+        println!("tile z: {}", tile.z.0);
+
         let in_chunk_tile_index = chunk_size.map_tile_to_chunk_tile(&tile.position, &chunk_index);
         let chunk = chunk_storage.get_or_add(
             tile.entity,
