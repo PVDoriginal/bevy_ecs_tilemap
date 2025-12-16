@@ -503,6 +503,8 @@ pub fn queue_material_tilemap_meshes<M: MaterialTilemap>(
                     transform.translation.z
                 } + chunk.z;
 
+                info!("chunk z: {}", chunk.z);
+
                 transparent_phase.add(Transparent2d {
                     entity: (entity, tilemap_id.0.into()),
                     draw_function: draw_tilemap,
