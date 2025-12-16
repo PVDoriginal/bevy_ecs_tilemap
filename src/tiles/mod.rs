@@ -25,7 +25,7 @@ pub struct TilePos {
 ///
 /// This should only be used with the [chunk size](crate::prelude::TilemapRenderSettings::render_chunk_size) set to (1, 1) in order to avoid unexpected results,
 /// since each chunk can only have one z offset and that offset will be determined by the last tile inside it that's been iterated over.  
-#[derive(Component, Reflect, Default, Clone, Copy)]
+#[derive(Component, Reflect, Default, Clone, Copy, Debug)]
 #[reflect(Component)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TileZ(pub f32);
@@ -137,7 +137,7 @@ pub struct TileBundle {
 #[derive(Component, Reflect, Default, Clone, Copy, Debug)]
 #[reflect(Component)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TilePosOld(pub TilePos);
+pub struct TilePosOld(pub TilePos, pub TileZ);
 
 /// A component that is attached to a Tile entity that
 /// tells the GPU how to animate the tile.

@@ -7,7 +7,7 @@ use crate::map::{
 };
 use crate::prelude::TilemapRenderSettings;
 use crate::render::extract::ExtractedFrustum;
-use crate::{prelude::TilemapGridSize, render::RenderChunkSize, FrustumCulling};
+use crate::{FrustumCulling, prelude::TilemapGridSize, render::RenderChunkSize};
 use bevy::prelude::{InheritedVisibility, Resource, Transform, With};
 use bevy::render::sync_world::TemporaryRenderEntity;
 use bevy::{log::trace, mesh::MeshVertexBufferLayouts};
@@ -22,9 +22,9 @@ use bevy::{
 
 use super::extract::ChangedInMainWorld;
 use super::{
+    DynamicUniformIndex,
     chunk::{ChunkId, PackedTileData, RenderChunk2dStorage, TilemapUniformData},
     extract::{ExtractedTile, ExtractedTilemapTexture},
-    DynamicUniformIndex,
 };
 use super::{RemovedMapEntity, RemovedTileEntity};
 
@@ -72,7 +72,7 @@ pub(crate) fn prepare(
 ) {
     for tile in extracted_tiles.iter() {
         // First if the tile position has changed remove the tile from the old location.
-        if tile.position != tile.old_position.0 {
+        if tile.position != tile.old_position.0 || tile.z.0 != tile.old_position.1.0 {
             chunk_storage.remove_tile_with_entity(tile.entity);
         }
 
@@ -100,8 +100,6 @@ pub(crate) fn prepare(
             transform.translation().z as u32,
             tile.tilemap_id.0.index(),
         );
-
-        println!("tile z: {}", tile.z.0);
 
         let in_chunk_tile_index = chunk_size.map_tile_to_chunk_tile(&tile.position, &chunk_index);
         let chunk = chunk_storage.get_or_add(

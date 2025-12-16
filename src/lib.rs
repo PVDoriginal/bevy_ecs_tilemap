@@ -16,7 +16,7 @@
 //! - Can `Anchor` tilemap like a sprite.
 
 use bevy::{
-    ecs::schedule::IntoScheduleConfigs,
+    ecs::{query::Or, schedule::IntoScheduleConfigs},
     prelude::{
         Bundle, Changed, Component, Deref, First, GlobalTransform, InheritedVisibility, Plugin,
         Query, Reflect, ReflectComponent, SystemSet, Transform, ViewVisibility, Visibility,
@@ -43,6 +43,8 @@ use tiles::{
 
 #[cfg(all(not(feature = "atlas"), feature = "render"))]
 use bevy::render::{ExtractSchedule, RenderApp};
+
+use crate::tiles::TileZ;
 
 pub mod anchor;
 /// A module that allows pre-loading of atlases into array textures.
@@ -195,8 +197,11 @@ pub mod prelude {
 }
 
 /// Updates old tile positions with the new values from the last frame.
-fn update_changed_tile_positions(mut query: Query<(&TilePos, &mut TilePosOld), Changed<TilePos>>) {
-    for (tile_pos, mut tile_pos_old) in query.iter_mut() {
+fn update_changed_tile_positions(
+    mut query: Query<(&TilePos, &TileZ, &mut TilePosOld), Or<(Changed<TilePos>, Changed<TileZ>)>>,
+) {
+    for (tile_pos, tile_z, mut tile_pos_old) in query.iter_mut() {
         tile_pos_old.0 = *tile_pos;
+        tile_pos_old.1 = *tile_z;
     }
 }
