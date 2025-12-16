@@ -198,6 +198,7 @@ pub fn extract(
             ),
             Or<(
                 Changed<TilePos>,
+                Changed<TileZ>,
                 Changed<TileVisible>,
                 Changed<TileTextureIndex>,
                 Changed<TileFlip>,
