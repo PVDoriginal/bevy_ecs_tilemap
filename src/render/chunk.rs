@@ -80,7 +80,7 @@ impl RenderChunk2dStorage {
         let mut hasher = std::collections::hash_map::DefaultHasher::new();
         position.hash(&mut hasher);
 
-        if let Some(chunk) = chunk_storage.clone().get(&pos)
+        if let Some(chunk) = chunk_storage.get(&pos)
             && chunk.z == z
         {
             return chunk_storage.get_mut(&pos).unwrap();
