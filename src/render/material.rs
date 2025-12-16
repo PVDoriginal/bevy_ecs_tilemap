@@ -10,7 +10,6 @@ use bevy::{
     prelude::*,
     reflect::TypePath,
     render::{
-        Extract, Render, RenderApp, RenderSystems,
         extract_component::{ExtractComponent, ExtractComponentPlugin},
         globals::GlobalsBuffer,
         render_asset::RenderAssets,
@@ -25,18 +24,19 @@ use bevy::{
         renderer::RenderDevice,
         texture::GpuImage,
         view::{ExtractedView, RenderVisibleEntities, ViewUniforms},
+        Extract, Render, RenderApp, RenderSystems,
     },
 };
 use bevy::{log::error, shader::ShaderRef};
 use std::{hash::Hash, marker::PhantomData};
 
 use super::{
-    ModifiedImageIds,
     chunk::{ChunkId, RenderChunk2dStorage},
     draw::DrawTilemapMaterial,
     pipeline::{TilemapPipeline, TilemapPipelineKey},
     prepare,
     queue::{ImageBindGroups, TilemapViewBindGroup},
+    ModifiedImageIds,
 };
 
 #[cfg(not(feature = "atlas"))]
@@ -502,8 +502,6 @@ pub fn queue_material_tilemap_meshes<M: MaterialTilemap>(
                 } else {
                     transform.translation.z
                 } + chunk.z;
-
-                info!("chunk z: {}", chunk.z);
 
                 transparent_phase.add(Transparent2d {
                     entity: (entity, tilemap_id.0.into()),
