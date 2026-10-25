@@ -39,7 +39,6 @@ pub struct MeshUniform {
     pub transform: Mat4,
 }
 
-#[allow(clippy::too_many_arguments, clippy::type_complexity)]
 pub(crate) fn prepare(
     mut commands: Commands,
     mut chunk_storage: ResMut<RenderChunk2dStorage>,
@@ -224,7 +223,7 @@ pub(crate) fn prepare(
                 index: tilemap_uniforms.0.push(&chunk_uniform),
                 marker: PhantomData,
             },
-            TemporaryRenderEntity,
+            TemporaryRenderEntity::default(),
         ));
     }
 

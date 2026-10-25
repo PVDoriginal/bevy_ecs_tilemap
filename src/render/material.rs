@@ -12,6 +12,7 @@ use bevy::{
     render::{
         extract_component::{ExtractComponent, ExtractComponentPlugin},
         globals::GlobalsBuffer,
+        material_bind_groups::FallbackBuffer,
         render_asset::RenderAssets,
         render_phase::{
             AddRenderCommand, DrawFunctions, PhaseItemExtraIndex, ViewSortedRenderPhases,
@@ -22,6 +23,7 @@ use bevy::{
             SpecializedRenderPipeline, SpecializedRenderPipelines,
         },
         renderer::RenderDevice,
+        storage::GpuShaderBuffer,
         texture::GpuImage,
         view::{ExtractedView, RenderVisibleEntities, ViewUniforms},
         Extract, Render, RenderApp, RenderSystems,
@@ -102,6 +104,7 @@ where
 
 #[derive(Component, Clone, Debug, Deref, DerefMut, Reflect, PartialEq, Eq, ExtractComponent)]
 #[reflect(Component, Default)]
+#[extract_app(RenderApp)]
 pub struct MaterialTilemapHandle<M: MaterialTilemap>(pub Handle<M>);
 
 impl<M: MaterialTilemap> Default for MaterialTilemapHandle<M> {
@@ -339,6 +342,8 @@ fn prepare_materials_tilemap<M: MaterialTilemap>(
     pipeline: Res<MaterialTilemapPipeline<M>>,
     mut param: StaticSystemParam<M::Param>,
     pipeline_cache: Res<PipelineCache>,
+    fallback_buffer: Res<FallbackBuffer>,
+    shader_buffer_assets: Res<RenderAssets<GpuShaderBuffer>>,
 ) {
     let queued_assets = std::mem::take(&mut prepare_next_frame.assets);
     for (handle, material) in queued_assets {
@@ -347,6 +352,8 @@ fn prepare_materials_tilemap<M: MaterialTilemap>(
             &render_device,
             &pipeline,
             &pipeline_cache,
+            &fallback_buffer,
+            &shader_buffer_assets,
             &mut param,
         ) {
             Ok(prepared_asset) => {
@@ -376,6 +383,8 @@ fn prepare_materials_tilemap<M: MaterialTilemap>(
             &render_device,
             &pipeline,
             &pipeline_cache,
+            &fallback_buffer,
+            &shader_buffer_assets,
             &mut param,
         ) {
             Ok(prepared_asset) => {
@@ -401,12 +410,16 @@ fn prepare_material_tilemap<M: MaterialTilemap>(
     render_device: &RenderDevice,
     pipeline: &MaterialTilemapPipeline<M>,
     pipeline_cache: &PipelineCache,
+    fallback_buffer: &FallbackBuffer,
+    shader_buffer_assets: &RenderAssets<GpuShaderBuffer>,
     param: &mut SystemParamItem<M::Param>,
 ) -> Result<PreparedMaterialTilemap<M>, AsBindGroupError> {
     let prepared = material.as_bind_group(
         &pipeline.material_tilemap_layout,
         render_device,
         pipeline_cache,
+        fallback_buffer,
+        shader_buffer_assets,
         param,
     )?;
     let bind_group_data = material.bind_group_data();
@@ -417,7 +430,6 @@ fn prepare_material_tilemap<M: MaterialTilemap>(
     })
 }
 
-#[allow(clippy::too_many_arguments)]
 pub fn queue_material_tilemap_meshes<M: MaterialTilemap>(
     chunk_storage: Res<RenderChunk2dStorage>,
     transparent_2d_draw_functions: Res<DrawFunctions<Transparent2d>>,
@@ -537,7 +549,6 @@ pub fn queue_material_tilemap_meshes<M: MaterialTilemap>(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 pub fn bind_material_tilemap_meshes<M: MaterialTilemap>(
     mut commands: Commands,
     chunk_storage: Res<RenderChunk2dStorage>,
