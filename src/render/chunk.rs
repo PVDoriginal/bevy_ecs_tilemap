@@ -381,6 +381,7 @@ impl RenderChunk2d {
             let mut positions: Vec<[f32; 4]> = Vec::with_capacity(size);
             let mut textures: Vec<[f32; 4]> = Vec::with_capacity(size);
             let mut colors: Vec<[f32; 4]> = Vec::with_capacity(size);
+            let mut tile_zs: Vec<f32> = Vec::with_capacity(size);
             let mut indices: Vec<u32> =
                 Vec::with_capacity(((self.size_in_tiles.x * self.size_in_tiles.y) * 6) as usize);
 
@@ -421,6 +422,8 @@ impl RenderChunk2d {
                 let texture: [f32; 4] = tile.texture.to_array();
                 textures.extend([texture, texture, texture, texture]);
 
+                tile_zs.extend([self.z]);
+
                 indices.extend_from_slice(&[i, i + 2, i + 1, i, i + 3, i + 2]);
                 i += 4;
             }
@@ -436,6 +439,10 @@ impl RenderChunk2d {
             self.mesh.insert_attribute(
                 crate::render::ATTRIBUTE_COLOR,
                 VertexAttributeValues::Float32x4(colors),
+            );
+            self.mesh.insert_attribute(
+                crate::render::ATTRIBUTE_TILE_Z,
+                VertexAttributeValues::Float32(tile_zs),
             );
             self.mesh.insert_indices(Indices::U32(indices));
 
