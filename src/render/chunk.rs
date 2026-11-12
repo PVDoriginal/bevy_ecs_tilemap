@@ -422,7 +422,7 @@ impl RenderChunk2d {
                 let texture: [f32; 4] = tile.texture.to_array();
                 textures.extend([texture, texture, texture, texture]);
 
-                tile_zs.extend([self.z]);
+                tile_zs.extend([self.z; 4]);
 
                 indices.extend_from_slice(&[i, i + 2, i + 1, i, i + 3, i + 2]);
                 i += 4;
