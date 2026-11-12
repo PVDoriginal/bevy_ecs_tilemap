@@ -189,6 +189,8 @@ impl SpecializedRenderPipeline for TilemapPipeline {
             VertexFormat::Float32x4,
             // Color
             VertexFormat::Float32x4,
+            // Tile Z
+            VertexFormat::Float32,
         ];
 
         let vertex_layout =
