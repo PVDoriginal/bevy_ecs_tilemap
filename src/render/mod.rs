@@ -235,7 +235,7 @@ pub const ATTRIBUTE_COLOR: MeshVertexAttribute =
 pub const ATTRIBUTE_TILE_Z: MeshVertexAttribute =
     MeshVertexAttribute::new("TileZ", 262033330, VertexFormat::Float32);
 pub const ATTRIBUTE_BEHIND_WALL: MeshVertexAttribute =
-    MeshVertexAttribute::new("BehindWall", 24291853, VertexFormat::Uint32);
+    MeshVertexAttribute::new("BehindWall", 242918530, VertexFormat::Uint32);
 
 #[derive(Component, ExtractComponent, Clone)]
 #[extract_app(RenderApp)]
