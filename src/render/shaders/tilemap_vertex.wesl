@@ -108,6 +108,7 @@ fn vertex(vertex_input: VertexInput) -> MeshVertexOutput {
     out.storage_position = vec2<u32>(vertex_input.position.xy);
     out.world_position = mesh_data.world_position;
     out.tile_z = vertex_input.tile_z;
+    out.behind_wall = vertex_input.behind_wall;
 
     return out;
 }

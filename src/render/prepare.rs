@@ -107,6 +107,7 @@ pub(crate) fn prepare(
             tile.tilemap_id.0,
             &chunk_data,
             tile.z.0,
+            tile.behind_wall.u32(),
             *chunk_size,
             *mesh_type,
             *tile_size,

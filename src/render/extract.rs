@@ -10,7 +10,6 @@ use bevy::{
     },
 };
 
-use crate::prelude::TilemapGridSize;
 use crate::prelude::TilemapRenderSettings;
 use crate::render::DefaultSampler;
 use crate::tiles::AnimatedTile;
@@ -24,6 +23,7 @@ use crate::{
     tiles::{TileColor, TileFlip, TilePos, TileTextureIndex, TileVisible},
 };
 use crate::{anchor::TilemapAnchor, tiles::TileZ};
+use crate::{prelude::TilemapGridSize, tiles::BehindWall};
 
 use super::chunk::PackedTileData;
 
@@ -36,6 +36,7 @@ pub struct ExtractedTile {
     pub position: TilePos,
     pub old_position: TilePosOld,
     pub z: TileZ,
+    pub behind_wall: BehindWall,
     pub tile: PackedTileData,
     pub tilemap_id: TilemapId,
 }
@@ -188,6 +189,7 @@ pub fn extract(
                 &TilePos,
                 &TilePosOld,
                 Option<&TileZ>,
+                Option<&BehindWall>,
                 &TilemapId,
                 &TileTextureIndex,
                 &TileVisible,
@@ -198,6 +200,7 @@ pub fn extract(
             Or<(
                 Changed<TilePos>,
                 Changed<TileZ>,
+                Changed<BehindWall>,
                 Changed<TileVisible>,
                 Changed<TileTextureIndex>,
                 Changed<TileFlip>,
@@ -253,6 +256,7 @@ pub fn extract(
         tile_pos,
         tile_pos_old,
         tile_z,
+        behind_wall,
         tilemap_id,
         tile_texture,
         visible,
@@ -316,6 +320,7 @@ pub fn extract(
                     position: *tile_pos,
                     old_position: *tile_pos_old,
                     z: *tile_z.unwrap_or(&TileZ(0.0)),
+                    behind_wall: *behind_wall.unwrap_or(&BehindWall(false)),
                     tile,
                     tilemap_id: TilemapId(data.0.id()),
                 },
