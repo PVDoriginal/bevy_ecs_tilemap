@@ -8,5 +8,6 @@ struct MeshVertexOutput {
     @location(3) storage_position: vec2<u32>,
     @location(4) world_position: vec4<f32>,
     @location(5) tile_z: f32,
+    @interpolate(flat)
     @location(6) behind_wall: u32,
 }
