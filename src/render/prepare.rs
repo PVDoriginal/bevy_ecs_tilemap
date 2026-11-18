@@ -75,6 +75,10 @@ pub(crate) fn prepare(
             || tile.z.0 != tile.tile_old.1.0
             || tile.behind_wall.0 != tile.tile_old.2.0
         {
+            println!(
+                "Deleting tile - Tile: {}, Old: {}",
+                tile.behind_wall.0, tile.tile_old.2.0
+            );
             chunk_storage.remove_tile_with_entity(tile.entity);
         }
 
@@ -126,7 +130,7 @@ pub(crate) fn prepare(
             tilemap_render_settings.y_sort,
         );
         println!(
-            "Tile: {}, Chunk: {}",
+            "Checking tile - Tile: {}, Chunk: {}",
             tile.behind_wall.u32(),
             chunk.behind_wall
         );
