@@ -139,7 +139,7 @@ pub struct TileBundle {
     pub visible: TileVisible,
     pub flip: TileFlip,
     pub color: TileColor,
-    pub old_position: TilePosOld,
+    pub tile_old: TileOld,
     #[cfg_attr(feature = "serde", serde(skip))]
     pub sync: SyncToRenderWorld,
 }
@@ -147,7 +147,7 @@ pub struct TileBundle {
 #[derive(Component, Reflect, Default, Clone, Copy, Debug)]
 #[reflect(Component)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct TilePosOld(pub TilePos, pub TileZ);
+pub struct TileOld(pub TilePos, pub TileZ, pub BehindWall);
 
 /// A component that is attached to a Tile entity that
 /// tells the GPU how to animate the tile.

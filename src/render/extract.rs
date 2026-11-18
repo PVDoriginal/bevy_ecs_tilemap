@@ -13,7 +13,7 @@ use bevy::{
 use crate::prelude::TilemapRenderSettings;
 use crate::render::DefaultSampler;
 use crate::tiles::AnimatedTile;
-use crate::tiles::TilePosOld;
+use crate::tiles::TileOld;
 use crate::{
     FrustumCulling,
     map::{
@@ -34,7 +34,7 @@ pub struct ChangedInMainWorld;
 pub struct ExtractedTile {
     pub entity: Entity,
     pub position: TilePos,
-    pub old_position: TilePosOld,
+    pub tile_old: TileOld,
     pub z: TileZ,
     pub behind_wall: BehindWall,
     pub tile: PackedTileData,
@@ -187,7 +187,7 @@ pub fn extract(
             (
                 &RenderEntity,
                 &TilePos,
-                &TilePosOld,
+                &TileOld,
                 Option<&TileZ>,
                 Option<&BehindWall>,
                 &TilemapId,
@@ -319,7 +319,7 @@ pub fn extract(
                 tile: ExtractedTile {
                     entity: render_entity.id(),
                     position: *tile_pos,
-                    old_position: *tile_pos_old,
+                    tile_old: *tile_pos_old,
                     z: *tile_z.unwrap_or(&TileZ(0.0)),
                     behind_wall: *behind_wall.unwrap_or(&BehindWall(false)),
                     tile,

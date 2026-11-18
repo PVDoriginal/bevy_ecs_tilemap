@@ -37,14 +37,13 @@ use prelude::{TilemapId, TilemapRenderSettings};
 #[cfg(feature = "render")]
 use render::material::{MaterialTilemap, StandardTilemapMaterial};
 use tiles::{
-    AnimatedTile, TileColor, TileFlip, TilePos, TilePosOld, TileStorage, TileTextureIndex,
-    TileVisible,
+    AnimatedTile, TileColor, TileFlip, TileOld, TilePos, TileStorage, TileTextureIndex, TileVisible,
 };
 
 #[cfg(all(not(feature = "atlas"), feature = "render"))]
 use bevy::render::{ExtractSchedule, RenderApp};
 
-use crate::tiles::TileZ;
+use crate::tiles::{BehindWall, TileZ};
 
 pub mod anchor;
 /// A module that allows pre-loading of atlases into array textures.
@@ -93,7 +92,7 @@ impl Plugin for TilemapPlugin {
             .register_type::<TileVisible>()
             .register_type::<TileFlip>()
             .register_type::<TileStorage>()
-            .register_type::<TilePosOld>()
+            .register_type::<TileOld>()
             .register_type::<AnimatedTile>()
             .configure_sets(First, TilemapFirstSet.after(TimeSystems));
     }
@@ -198,10 +197,14 @@ pub mod prelude {
 
 /// Updates old tile positions with the new values from the last frame.
 fn update_changed_tile_positions(
-    mut query: Query<(&TilePos, &TileZ, &mut TilePosOld), Or<(Changed<TilePos>, Changed<TileZ>)>>,
+    mut query: Query<
+        (&TilePos, &TileZ, &BehindWall, &mut TileOld),
+        Or<(Changed<TilePos>, Changed<TileZ>, Changed<BehindWall>)>,
+    >,
 ) {
-    for (tile_pos, tile_z, mut tile_pos_old) in query.iter_mut() {
-        tile_pos_old.0 = *tile_pos;
-        tile_pos_old.1 = *tile_z;
+    for (tile_pos, tile_z, behind_wall, mut tile_old) in query.iter_mut() {
+        tile_old.0 = *tile_pos;
+        tile_old.1 = *tile_z;
+        tile_old.2 = *behind_wall;
     }
 }

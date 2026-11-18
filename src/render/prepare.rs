@@ -71,7 +71,10 @@ pub(crate) fn prepare(
 ) {
     for tile in extracted_tiles.iter() {
         // First if the tile position has changed remove the tile from the old location.
-        if tile.position != tile.old_position.0 || tile.z.0 != tile.old_position.1.0 {
+        if tile.position != tile.tile_old.0
+            || tile.z.0 != tile.tile_old.1.0
+            || tile.behind_wall.0 != tile.tile_old.2.0
+        {
             chunk_storage.remove_tile_with_entity(tile.entity);
         }
 
