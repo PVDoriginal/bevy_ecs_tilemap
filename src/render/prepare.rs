@@ -129,6 +129,7 @@ pub(crate) fn prepare(
             chunk_size,
             tilemap_render_settings.y_sort,
         );
+        chunk.behind_wall = tile.behind_wall.u32();
         println!(
             "Checking tile - Tile: {}, Chunk: {}",
             tile.behind_wall.u32(),
