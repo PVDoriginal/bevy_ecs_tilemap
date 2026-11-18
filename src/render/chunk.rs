@@ -396,8 +396,6 @@ impl RenderChunk2d {
 
             // Convert tile into mesh data.
             for tile in self.tiles.iter().filter_map(|x| x.as_ref()) {
-                println!("Chunk {}", self.behind_wall);
-
                 if !tile.visible {
                     continue;
                 }
@@ -466,11 +464,6 @@ impl RenderChunk2d {
                 label: Some("Mesh Vertex Buffer"),
                 contents: &vertex_buffer_data,
             });
-
-            println!(
-                "Buffer {:?}",
-                self.mesh.attribute(crate::render::ATTRIBUTE_BEHIND_WALL.id)
-            );
 
             let index_buffer = device.create_buffer_with_data(&BufferInitDescriptor {
                 usage: BufferUsages::INDEX,
