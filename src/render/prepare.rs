@@ -107,7 +107,6 @@ pub(crate) fn prepare(
             tile.tilemap_id.0,
             &chunk_data,
             tile.z.0,
-            tile.behind_wall.u32(),
             *chunk_size,
             *mesh_type,
             *tile_size,
@@ -122,7 +121,6 @@ pub(crate) fn prepare(
             chunk_size,
             tilemap_render_settings.y_sort,
         );
-        chunk.behind_wall = tile.behind_wall.u32();
 
         chunk.set(
             &in_chunk_tile_index.into(),

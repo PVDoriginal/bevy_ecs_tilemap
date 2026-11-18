@@ -36,7 +36,6 @@ pub struct ExtractedTile {
     pub position: TilePos,
     pub tile_old: TileOld,
     pub z: TileZ,
-    pub behind_wall: BehindWall,
     pub tile: PackedTileData,
     pub tilemap_id: TilemapId,
 }
@@ -287,6 +286,7 @@ pub fn extract(
             position,
             texture,
             color: color.0.to_linear().to_f32_array(),
+            behind_wall: behind_wall.map(|b| b.u32()).unwrap_or_default(),
         };
 
         let data = tilemap_query.get(tilemap_id.0).unwrap();
@@ -320,7 +320,6 @@ pub fn extract(
                     position: *tile_pos,
                     tile_old: *tile_pos_old,
                     z: *tile_z.unwrap_or(&TileZ(0.0)),
-                    behind_wall: *behind_wall.unwrap_or(&BehindWall(true)),
                     tile,
                     tilemap_id: TilemapId(data.0.id()),
                 },
