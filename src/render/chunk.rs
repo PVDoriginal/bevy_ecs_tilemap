@@ -125,7 +125,7 @@ impl RenderChunk2dStorage {
 
     pub fn remove_tile_with_entity(&mut self, entity: Entity) {
         if let Some((chunk, tile_pos)) = self.get_mut_from_entity(entity) {
-            chunk.set(&tile_pos.into(), None);
+            chunk.set(&tile_pos.into(), None, 0);
         }
 
         self.entity_to_chunk.remove(&entity);
@@ -308,9 +308,10 @@ impl RenderChunk2d {
         &mut self.tiles[tile_pos.to_index(&self.size_in_tiles.into())]
     }
 
-    pub fn set(&mut self, tile_pos: &TilePos, tile: Option<PackedTileData>) {
+    pub fn set(&mut self, tile_pos: &TilePos, tile: Option<PackedTileData>, behind_wall: u32) {
         self.dirty_mesh = true;
         self.tiles[tile_pos.to_index(&self.size_in_tiles.into())] = tile;
+        self.behind_wall = behind_wall;
     }
 
     pub fn get_index(&self) -> UVec3 {

@@ -71,14 +71,7 @@ pub(crate) fn prepare(
 ) {
     for tile in extracted_tiles.iter() {
         // First if the tile position has changed remove the tile from the old location.
-        if tile.position != tile.tile_old.0
-            || tile.z.0 != tile.tile_old.1.0
-            || tile.behind_wall.0 != tile.tile_old.2.0
-        {
-            println!(
-                "Deleting tile - Tile: {}, Old: {}",
-                tile.behind_wall.0, tile.tile_old.2.0
-            );
+        if tile.position != tile.tile_old.0 || tile.z.0 != tile.tile_old.1.0 {
             chunk_storage.remove_tile_with_entity(tile.entity);
         }
 
@@ -129,12 +122,7 @@ pub(crate) fn prepare(
             chunk_size,
             tilemap_render_settings.y_sort,
         );
-        chunk.behind_wall = tile.behind_wall.u32();
-        println!(
-            "Checking tile - Tile: {}, Chunk: {}",
-            tile.behind_wall.u32(),
-            chunk.behind_wall
-        );
+
         chunk.set(
             &in_chunk_tile_index.into(),
             Some(PackedTileData {
@@ -145,6 +133,7 @@ pub(crate) fn prepare(
                     .extend(tile.tile.position.w),
                 ..tile.tile
             }),
+            tile.behind_wall.u32(),
         );
     }
 
