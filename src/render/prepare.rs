@@ -122,6 +122,7 @@ pub(crate) fn prepare(
             chunk_size,
             tilemap_render_settings.y_sort,
         );
+        chunk.behind_wall = tile.behind_wall.u32();
 
         chunk.set(
             &in_chunk_tile_index.into(),
@@ -133,7 +134,6 @@ pub(crate) fn prepare(
                     .extend(tile.tile.position.w),
                 ..tile.tile
             }),
-            tile.behind_wall.u32(),
         );
     }
 
