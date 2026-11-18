@@ -124,6 +124,7 @@ pub(crate) fn prepare(
         );
         chunk.behind_wall = tile.behind_wall.u32();
 
+        println!("Prepare {}", tile.behind_wall.u32());
         chunk.set(
             &in_chunk_tile_index.into(),
             Some(PackedTileData {
