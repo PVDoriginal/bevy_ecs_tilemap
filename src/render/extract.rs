@@ -320,7 +320,7 @@ pub fn extract(
                     position: *tile_pos,
                     tile_old: *tile_pos_old,
                     z: *tile_z.unwrap_or(&TileZ(0.0)),
-                    behind_wall: *behind_wall.unwrap_or(&BehindWall(true)),
+                    behind_wall: *behind_wall.unwrap_or(&BehindWall(false)),
                     tile,
                     tilemap_id: TilemapId(data.0.id()),
                 },
