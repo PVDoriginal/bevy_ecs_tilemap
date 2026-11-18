@@ -30,7 +30,7 @@ pub struct TilePos {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct TileZ(pub f32);
 
-#[derive(Component, Reflect, Default, Clone, Copy, Debug)]
+#[derive(Component, Reflect, Default, Clone, Copy, Debug, PartialEq)]
 #[reflect(Component)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct BehindWall(pub bool);
