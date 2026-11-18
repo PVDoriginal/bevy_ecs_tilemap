@@ -122,6 +122,7 @@ pub(crate) fn prepare(
             chunk_size,
             tilemap_render_settings.y_sort,
         );
+        println!("Prepare Behind Wall {}", chunk.behind_wall);
         chunk.set(
             &in_chunk_tile_index.into(),
             Some(PackedTileData {

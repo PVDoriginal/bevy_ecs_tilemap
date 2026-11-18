@@ -312,6 +312,7 @@ pub fn extract(
                 },
             ),
         );
+        println!("Extract Behind Wall {:?}", behind_wall);
         extracted_tiles.push((
             render_entity.id(),
             ExtractedTileBundle {
