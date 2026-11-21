@@ -192,7 +192,7 @@ impl SpecializedRenderPipeline for TilemapPipeline {
             // Tile Z
             VertexFormat::Float32,
             // Behind Wall
-            VertexFormat::Uint32,
+            VertexFormat::Float32,
         ];
 
         let vertex_layout =
