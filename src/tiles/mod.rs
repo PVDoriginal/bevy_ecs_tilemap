@@ -33,12 +33,7 @@ pub struct TileZ(pub f32);
 #[derive(Component, Reflect, Default, Clone, Copy, Debug, PartialEq)]
 #[reflect(Component)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct BehindWall(pub bool);
-impl BehindWall {
-    pub fn u32(&self) -> u32 {
-        if self.0 { 1 } else { 0 }
-    }
-}
+pub struct BehindWall(pub f32);
 
 impl TilePos {
     pub const fn new(x: u32, y: u32) -> Self {

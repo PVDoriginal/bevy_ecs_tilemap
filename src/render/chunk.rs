@@ -49,7 +49,7 @@ impl RenderChunk2dStorage {
         chunk_entity: Entity,
         position: &UVec4,
         z: f32,
-        behind_wall: u32,
+        behind_wall: f32,
         chunk_size: UVec2,
         mesh_type: TilemapType,
         tile_size: TilemapTileSize,
@@ -199,8 +199,8 @@ pub struct RenderChunk2d {
     position: Vec2,
     /// The z offset of this chunk, based on [crate::tiles::TileZ]
     pub z: f32,
-    /// True when a character is hidden behind a this tile as a wall
-    pub behind_wall: u32,
+    /// Scales up to 1.0 when the player is hidden behind a wall, down to 0.0 when not.
+    pub behind_wall: f32,
     /// Size of the chunk, in tiles.
     pub size_in_tiles: UVec2,
     /// [`TilemapSize`] of the map this chunk belongs to.
@@ -242,7 +242,7 @@ impl RenderChunk2d {
         tilemap_id: u64,
         index: &UVec3,
         z: f32,
-        behind_wall: u32,
+        behind_wall: f32,
         size_in_tiles: UVec2,
         map_type: TilemapType,
         tile_size: TilemapTileSize,
@@ -388,7 +388,7 @@ impl RenderChunk2d {
             let mut textures: Vec<[f32; 4]> = Vec::with_capacity(size);
             let mut colors: Vec<[f32; 4]> = Vec::with_capacity(size);
             let mut tile_zs: Vec<f32> = Vec::with_capacity(size);
-            let mut behind_walls: Vec<u32> = Vec::with_capacity(size);
+            let mut behind_walls: Vec<f32> = Vec::with_capacity(size);
             let mut indices: Vec<u32> =
                 Vec::with_capacity(((self.size_in_tiles.x * self.size_in_tiles.y) * 6) as usize);
 
@@ -454,7 +454,7 @@ impl RenderChunk2d {
             );
             self.mesh.insert_attribute(
                 crate::render::ATTRIBUTE_BEHIND_WALL,
-                VertexAttributeValues::Uint32(behind_walls),
+                VertexAttributeValues::Float32(behind_walls),
             );
             self.mesh.insert_indices(Indices::U32(indices));
 

@@ -24,7 +24,7 @@ struct VertexInput {
     @location(1) position: vec4<f32>,
     @location(2) color: vec4<f32>,
     @location(3) tile_z: f32,
-    @location(4) behind_wall: u32,
+    @location(4) behind_wall: f32,
 }
 
 @if(ATLAS) {
